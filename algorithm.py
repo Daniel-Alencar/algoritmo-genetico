@@ -17,12 +17,10 @@ def f(x):
 def generateInitPopulation():
   list = []
   for c in range(3):
-    list.append(int(math.floor(random() * 21) - 10))
+    list.append('{:0b}'.format(int(math.floor(random() * 21) - 10)).zfill(5))
   return list
 
 print(generateInitPopulation())
-
-print('{:0b}'.format(generateInitPopulation()).zfill(5))
 
 list = []
 
