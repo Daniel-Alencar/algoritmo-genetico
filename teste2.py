@@ -12,16 +12,34 @@ for item in population:
 
 algorithm = Algorithm(0.6, 0.01)
 
-print("\nCrossover:", algorithm.probability_crossover)
+# Algoritmo
 
 aptidao = algorithm.fitness(population)
-crossoved_population = algorithm.crossover(population)
 
-print("\nCrossoved:")
-for item in crossoved_population:
-  print(item.bin)
+news = []
 
-print("\nMutated:")
-mutated_population = algorithm.mutation(crossoved_population)
-for item in mutated_population:
-  print(item.bin)
+for i in range(0, 2):
+  print("\nCrossover:", algorithm.probability_crossover)
+  crossoved_population = algorithm.crossover(population)
+
+  print("\nCrossoved cromossomos:")
+  for item in crossoved_population:
+    print(item.bin)
+
+  print("\nMutation:", algorithm.probability_mutation)
+  mutated_population = algorithm.mutation(crossoved_population)
+
+  print("\nMutated cromossomos:")
+  for item in mutated_population:
+    print(item.bin)
+
+  news.append(mutated_population)
+
+newPopulation = (news[0] + news[1])
+
+# Avaliar os indivíduos
+aptidao = algorithm.fitness(newPopulation)
+seletion = algorithm.probabilitySelection(aptidao)
+
+if algorithm.generations >= 5:
+  print("Dar um 'break'")

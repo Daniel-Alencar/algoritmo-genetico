@@ -1,5 +1,4 @@
 from bitstring import BitArray 
-import math
 from random import randint
 
 class Problem:

@@ -9,6 +9,7 @@ class Algorithm:
     self.probability_crossover = probability_crossover
     self.probability_mutation = probability_mutation
     self.aptidao = []
+    self.generations = 0
 
   # Dentro desta função será calculada a f(x)
   def function(self, x):
@@ -82,7 +83,7 @@ class Algorithm:
     # Calcular a probabilidade
       value = random.random()
 
-      if 0 <= self.probability_mutation:
+      if value <= self.probability_mutation:
 
         # Posição da mutação
         position = randint(0, 4)
