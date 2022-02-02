@@ -75,4 +75,31 @@ class Algorithm:
 
   # Faz a mutação com a probabilidade X de algum dos bits terem mutação
   def mutation(self, population: BitArray):
-    return []
+
+    mutated_cromossomos = []
+    for cromossomo in population:
+
+    # Calcular a probabilidade
+      value = random.random()
+
+      if 0 <= self.probability_mutation:
+
+        # Posição da mutação
+        position = randint(0, 4)
+        print("Posição da mutação:", position)
+
+        # Mutação
+        bit_string = cromossomo.bin
+        list_bits = list(bit_string)
+        if list_bits[position] == '0':
+          list_bits[position] = '1'
+        else:
+          list_bits[position] = '0'
+        bit_string = "".join(list_bits)
+        new = BitArray(bin=bit_string)
+      
+        mutated_cromossomos.append(new)
+      else:
+        mutated_cromossomos.append(cromossomo)
+
+    return mutated_cromossomos

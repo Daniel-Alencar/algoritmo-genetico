@@ -8,3 +8,6 @@ print(type(f.bin), f.bin)
 
 print(type(e.int), e.int)
 print(type(f.int), f.int)
+
+g = BitArray(bin='01001')
+print(type(g.int), g.int)

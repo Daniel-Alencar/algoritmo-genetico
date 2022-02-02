@@ -20,3 +20,8 @@ crossoved_population = algorithm.crossover(population)
 print("\nCrossoved:")
 for item in crossoved_population:
   print(item.bin)
+
+print("\nMutated:")
+mutated_population = algorithm.mutation(crossoved_population)
+for item in mutated_population:
+  print(item.bin)
