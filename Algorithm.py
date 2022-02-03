@@ -13,7 +13,10 @@ class Algorithm:
     self.fitness()
     self.probabilitySelection()
 
-    self.aptidao_history = []
+    self.last_aptidao = []
+    self.improvement = False
+    self.last_maximum_aptidao = 0
+    self.count_not_improvement = 0
 
   # Dentro desta função será calculada a f(x)
   def function(self, x):
@@ -110,17 +113,29 @@ class Algorithm:
       news.append(mutated_population)
     newPopulation = (news[0] + news[1])
 
+    self.last_aptidao = self.aptidao
+
     self.population = newPopulation
     self.generations += 1
+
     self.fitness()
     self.probabilitySelection()
-    self.aptidao_history.append(self.aptidao)
 
     print(self.aptidao)
+    print([cromossomo.int for cromossomo in self.population ])
 
-  def evaluate():
-    return True
+  def evaluate(self):
+    last = max(self.last_aptidao)
+    current = max(self.aptidao)
+    if(last < current):
+      self.improvement = True
+      self.count_not_improvement = 0
+    else:
+      self.improvement = False
+      self.count_not_improvement += 1
+    
 
-  def execution(self, limit_generations: int):
-    while (self.generations < limit_generations):
+  def execution(self, limit_generations: int, limit_improvement: int):
+    while (self.count_not_improvement < limit_improvement):
       self.generateNewGeneration()
+      self.evaluate()
