@@ -1,15 +1,19 @@
 from bitstring import BitArray
 from random import randint
 import random
-import numpy as np
+
 
 class Algorithm:
-
-  def __init__(self, probability_crossover: float, probability_mutation: float):
+  def __init__(self, probability_crossover: float, probability_mutation: float, population):
     self.probability_crossover = probability_crossover
     self.probability_mutation = probability_mutation
-    self.aptidao = []
+    self.population = population
     self.generations = 0
+
+    self.fitness()
+    self.probabilitySelection()
+
+    self.aptidao_history = []
 
   # Dentro desta função será calculada a f(x)
   def function(self, x):
@@ -17,90 +21,106 @@ class Algorithm:
 
   # Os menores valores de f(x) devem ter maiores aptidões
   # Ou seja, podemos inverter e usarmos 0 - f(x)
-  def fitness(self, population: BitArray):
+  def fitness(self):
     self.aptidao = []
-    for item in population:
+    for item in self.population:
       self.aptidao.append(0 - self.function(item.int))
-    return self.aptidao
 
   # Divisão da probabilidade de seleção (equação do slide 32)
-  def probabilitySelection(self, aptidao):
+  def probabilitySelection(self):
     soma = 0
-    for value in aptidao:
+    for value in self.aptidao:
       soma += value
     
     self.probabilities = []
-    for value in aptidao:
+    for value in self.aptidao:
       self.probabilities.append(value / soma)
-    return self.probabilities
+
+  def selection(self):
+    aptidao_list = self.aptidao.copy()
+    promising = []
+
+    for index in range(0, 2):
+      maximus = max(aptidao_list)
+      promising.append(aptidao_list.index(maximus))
+      aptidao_list.pop(aptidao_list.index(maximus))
+
+    return promising
 
   # Faz o crossover com a probabilidade X de haver algum crossover
   # O ponto de corte do crossover pode ser aleatório
   def crossover(self, population: BitArray):
-
     # Pegar os dois cromossomos mais promissores
-    aptidao_list = self.aptidao.copy()
-
-    promising_index = []
-
-    index = aptidao_list.index(max(aptidao_list))
-    aptidao_list.pop(index)
-    promising_index.append(index)
-    index = aptidao_list.index(max(aptidao_list))
-    aptidao_list.pop(index)
-    promising_index.append(index)
+    promising_indexes = self.selection()
 
     # Calcular a probabilidade
     value = random.random()
-    print("Valor aleatório:", value)
 
     if value <= self.probability_crossover:
-      print("\nFazendo crossover...")
-
       # 0|0|1|0|0
-      ponto_de_corte = int(randint(1, 4))
-      print("\nPonto de corte:", ponto_de_corte)
+      ponto_de_corte = randint(1, 4)
       crossoved_cromossomos = []
 
       # Fazer o fatiamento
-      print("\nOs escolhidos:")
       for i in range(0, 2):
-        print(population[promising_index[i]].bin)
-        new = population[promising_index[i]][:ponto_de_corte] + population[promising_index[(i+1) % 2]][ponto_de_corte:]
+        new = population[promising_indexes[i]][:ponto_de_corte] + population[promising_indexes[(i + 1) % 2]][ponto_de_corte:]
+        while(-10 > new.int > 10):
+          new = population[promising_indexes[i]][:ponto_de_corte] + population[promising_indexes[(i + 1) % 2]][ponto_de_corte:]
         crossoved_cromossomos.append(new)
 
       return crossoved_cromossomos
       
-    return [population[promising_index[0]], population[promising_index[1]]]
+    return [population[promising_indexes[0]], population[promising_indexes[1]]]
 
 
   # Faz a mutação com a probabilidade X de algum dos bits terem mutação
   def mutation(self, population: BitArray):
-
     mutated_cromossomos = []
     for cromossomo in population:
-
-    # Calcular a probabilidade
-      value = random.random()
-
-      if value <= self.probability_mutation:
-
-        # Posição da mutação
-        position = randint(0, 4)
-        print("Posição da mutação:", position)
-
-        # Mutação
+      while True:
         bit_string = cromossomo.bin
-        list_bits = list(bit_string)
-        if list_bits[position] == '0':
-          list_bits[position] = '1'
-        else:
-          list_bits[position] = '0'
-        bit_string = "".join(list_bits)
-        new = BitArray(bin=bit_string)
-      
-        mutated_cromossomos.append(new)
-      else:
-        mutated_cromossomos.append(cromossomo)
+        
+        for position in range(0, 5):
+        # Calcular a probabilidade
+          value = random.random()
+
+          if value <= self.probability_mutation:
+            # Mutação
+            list_bits = list(bit_string)
+            if list_bits[position] == '0':
+              list_bits[position] = '1'
+            else:
+              list_bits[position] = '0'
+            bit_string = "".join(list_bits)
+        
+        new = BitArray(bin = bit_string)
+        if (-10 <= new.int <= 10):
+          break
+        
+      mutated_cromossomos.append(new)
 
     return mutated_cromossomos
+  
+  def generateNewGeneration(self):
+    news = []
+    for i in range(0, 2):
+      crossoved_population = self.crossover(self.population)
+      mutated_population = self.mutation(crossoved_population)
+
+      news.append(mutated_population)
+    newPopulation = (news[0] + news[1])
+
+    self.population = newPopulation
+    self.generations += 1
+    self.fitness()
+    self.probabilitySelection()
+    self.aptidao_history.append(self.aptidao)
+
+    print(self.aptidao)
+
+  def evaluate():
+    return True
+
+  def execution(self, limit_generations: int):
+    while (self.generations < limit_generations):
+      self.generateNewGeneration()
