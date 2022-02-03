@@ -121,8 +121,9 @@ class Algorithm:
     self.fitness()
     self.probabilitySelection()
 
-    print(self.aptidao)
-    print([cromossomo.int for cromossomo in self.population ])
+    # print(self.aptidao)
+    # print([cromossomo.int for cromossomo in self.population])
+    # print("")
 
   def evaluate(self):
     last = max(self.last_aptidao)
@@ -135,7 +136,7 @@ class Algorithm:
       self.count_not_improvement += 1
     
 
-  def execution(self, limit_generations: int, limit_improvement: int):
-    while (self.count_not_improvement < limit_improvement):
+  def execution(self, limit_generations: int, limit_not_improvement: int):
+    while (self.generations <= limit_generations or self.count_not_improvement <= limit_not_improvement):
       self.generateNewGeneration()
       self.evaluate()
