@@ -4,14 +4,13 @@ import random
 
 
 class Algorithm:
-  def __init__(self, probability_crossover: float, probability_mutation: float, population, limit_inferior: int,  limit_superior: int):
+  def __init__(self, probability_crossover: float, probability_mutation: float, population: BitArray, limit_inferior: int,  limit_superior: int):
     self.probability_crossover = probability_crossover
     self.probability_mutation = probability_mutation
     self.population = population
     self.generations = 0
 
     self.fitness()
-    # self.probabilitySelection()
 
     self.last_aptidao = []
     self.improvement = False
@@ -21,9 +20,13 @@ class Algorithm:
     self.limit_inferior = limit_inferior
     self.limit_superior = limit_superior
 
+    self.length = len(population[0].bin)
+    
+
   # Dentro desta função será calculada a f(x)
   def function(self, x):
     return (x**2 - 3*x + 4)
+  
   # Os menores valores de f(x) devem ter maiores aptidões
   # Ou seja, podemos inverter e usarmos 0 - f(x)
   def fitness(self):
@@ -31,15 +34,17 @@ class Algorithm:
     for item in self.population:
       self.aptidao.append(0 - self.function(item.int))
 
+  """
   # Divisão da probabilidade de seleção (equação do slide 32)
-  # def probabilitySelection(self):
-  #   soma = 0
-  #   for value in self.aptidao:
-  #     soma += value
+  def probabilitySelection(self):
+    soma = 0
+    for value in self.aptidao:
+      soma += value
     
-  #   self.probabilities = []
-  #   for value in self.aptidao:
-  #     self.probabilities.append(value / soma)
+    self.probabilities = []
+    for value in self.aptidao:
+      self.probabilities.append(value / soma)
+  """
 
   def selection(self):
     aptidao_list = self.aptidao.copy()
@@ -63,7 +68,7 @@ class Algorithm:
 
     if value <= self.probability_crossover:
       # 0|0|1|0|0
-      ponto_de_corte = randint(1, 4)
+      ponto_de_corte = randint(1, self.length - 1)
       crossoved_cromossomos = []
 
       # Fazer o fatiamento
@@ -77,7 +82,6 @@ class Algorithm:
       
     return [population[promising_indexes[0]], population[promising_indexes[1]]]
 
-
   # Faz a mutação com a probabilidade X de algum dos bits terem mutação
   def mutation(self, population: BitArray):
     mutated_cromossomos = []
@@ -85,7 +89,7 @@ class Algorithm:
       while True:
         bit_string = cromossomo.bin
         
-        for position in range(0, 5):
+        for position in range(0, self.length):
         # Calcular a probabilidade
           value = random.random()
 
@@ -121,7 +125,6 @@ class Algorithm:
     self.generations += 1
 
     self.fitness()
-    # self.probabilitySelection()
 
     print("\nGeneration", self.generations)
     print([cromossomo.int for cromossomo in self.population])
