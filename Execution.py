@@ -1,14 +1,18 @@
 from Problem import Problem
 from Algorithm import Algorithm
 
-problem = Problem()
-population = problem.generateInitPopulation()
-# ===================================================================
+limit_inferior = 0
+limit_superior = 10
 
-algorithm = Algorithm(0.8, 0.01, population)
+problem = Problem()
+population = problem.generateInitPopulation(limit_inferior=limit_inferior, limit_superior=limit_superior)
+
+# ===========================================================================================================
+
+algorithm = Algorithm(0.8, 0.01, population,limit_inferior, limit_superior)
 
 # Algoritmo
-algorithm.execution(limit_generations = 500, limit_not_improvement = 100)
+algorithm.execution(limit_generations = 5000, limit_not_improvement = 50)
 
 index = algorithm.aptidao.index(max(algorithm.aptidao))
 value = algorithm.population[index].int

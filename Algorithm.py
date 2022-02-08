@@ -4,7 +4,7 @@ import random
 
 
 class Algorithm:
-  def __init__(self, probability_crossover: float, probability_mutation: float, population):
+  def __init__(self, probability_crossover: float, probability_mutation: float, population, limit_inferior: int,  limit_superior: int):
     self.probability_crossover = probability_crossover
     self.probability_mutation = probability_mutation
     self.population = population
@@ -18,9 +18,12 @@ class Algorithm:
     self.last_maximum_aptidao = 0
     self.count_not_improvement = 0
 
+    self.limit_inferior = limit_inferior
+    self.limit_superior = limit_superior
+
   # Dentro desta função será calculada a f(x)
   def function(self, x):
-    return (3*x + 1)
+    return (x**2 - 3*x + 4)
   # Os menores valores de f(x) devem ter maiores aptidões
   # Ou seja, podemos inverter e usarmos 0 - f(x)
   def fitness(self):
@@ -66,7 +69,7 @@ class Algorithm:
       # Fazer o fatiamento
       for i in range(0, 2):
         new = population[promising_indexes[i]][:ponto_de_corte] + population[promising_indexes[(i + 1) % 2]][ponto_de_corte:]
-        while(-10 > new.int > 10):
+        while(self.limit_inferior > new.int > self.limit_superior):
           new = population[promising_indexes[i]][:ponto_de_corte] + population[promising_indexes[(i + 1) % 2]][ponto_de_corte:]
         crossoved_cromossomos.append(new)
 
@@ -96,7 +99,7 @@ class Algorithm:
             bit_string = "".join(list_bits)
         
         new = BitArray(bin = bit_string)
-        if (-10 <= new.int <= 10):
+        if (self.limit_inferior <= new.int <= self.limit_superior):
           break
         
       mutated_cromossomos.append(new)
