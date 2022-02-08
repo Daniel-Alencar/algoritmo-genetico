@@ -5,13 +5,14 @@ problem = Problem()
 population = problem.generateInitPopulation()
 # ===================================================================
 
-algorithm = Algorithm(0.6, 0.01, population)
+algorithm = Algorithm(0.8, 0.01, population)
 
 # Algoritmo
-algorithm.execution(limit_generations = 100, limit_not_improvement = 10)
+algorithm.execution(limit_generations = 500, limit_not_improvement = 100)
 
 index = algorithm.aptidao.index(max(algorithm.aptidao))
+value = algorithm.population[index].int
 
-print("RESULTADO:")
-print("x =", algorithm.population[index].int)
-print("f(x) =", algorithm.function(algorithm.population[index].int))
+print("\nRESULTADO:")
+print("x =", value)
+print("f(x) =", algorithm.function(value))

@@ -11,7 +11,7 @@ class Algorithm:
     self.generations = 0
 
     self.fitness()
-    self.probabilitySelection()
+    # self.probabilitySelection()
 
     self.last_aptidao = []
     self.improvement = False
@@ -20,8 +20,7 @@ class Algorithm:
 
   # Dentro desta função será calculada a f(x)
   def function(self, x):
-    return (x**2 - 3*x + 4)
-
+    return (3*x + 1)
   # Os menores valores de f(x) devem ter maiores aptidões
   # Ou seja, podemos inverter e usarmos 0 - f(x)
   def fitness(self):
@@ -30,14 +29,14 @@ class Algorithm:
       self.aptidao.append(0 - self.function(item.int))
 
   # Divisão da probabilidade de seleção (equação do slide 32)
-  def probabilitySelection(self):
-    soma = 0
-    for value in self.aptidao:
-      soma += value
+  # def probabilitySelection(self):
+  #   soma = 0
+  #   for value in self.aptidao:
+  #     soma += value
     
-    self.probabilities = []
-    for value in self.aptidao:
-      self.probabilities.append(value / soma)
+  #   self.probabilities = []
+  #   for value in self.aptidao:
+  #     self.probabilities.append(value / soma)
 
   def selection(self):
     aptidao_list = self.aptidao.copy()
@@ -119,11 +118,12 @@ class Algorithm:
     self.generations += 1
 
     self.fitness()
-    self.probabilitySelection()
+    # self.probabilitySelection()
 
-    # print(self.aptidao)
-    # print([cromossomo.int for cromossomo in self.population])
-    # print("")
+    print("\nGeneration", self.generations)
+    print([cromossomo.int for cromossomo in self.population])
+    print([cromossomo.bin for cromossomo in self.population])
+    print(self.aptidao)
 
   def evaluate(self):
     last = max(self.last_aptidao)
@@ -137,6 +137,6 @@ class Algorithm:
     
 
   def execution(self, limit_generations: int, limit_not_improvement: int):
-    while (self.generations <= limit_generations or self.count_not_improvement <= limit_not_improvement):
+    while (self.generations <= limit_generations and self.count_not_improvement <= limit_not_improvement):
       self.generateNewGeneration()
       self.evaluate()
