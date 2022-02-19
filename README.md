@@ -6,12 +6,12 @@
 <p align="center">
  <a href="#objetivo">Objetivo</a> •
  <a href="#mudando-valores-definidos">Mudando valores definidos</a> • 
- <a href="#rodando-o-algoritmo">Rodando o algoritmo</a> • 
+ <a href="#passo-a-passo">Passo-a-passo</a> 
 </p>
 
 ### Objetivo
 
-<p align="center"> Este projeto foi feito com o objetivo de calcular um x para uma função f(x) de forma que f(x) seja um valor mínimo dentro de um intervalo especificado para os valores de x. O código utilizou o algoritmo genetico com crossover e mutação para chegar cada vez mais perto do mínimo da função.</p>
+<p> Este projeto foi feito com o objetivo de calcular um x para uma função f(x) de forma que f(x) seja um valor mínimo dentro de um intervalo especificado para os valores de x. O código utilizou o algoritmo genetico com crossover e mutação para chegar cada vez mais perto do mínimo da função.</p>
 
 <p align="center">
   <h1 style="display: flex; flex-wrap: wrap;">
@@ -31,9 +31,9 @@ O código Execution.py vem com os seguintes valores definidos:
 
 Para alterar estes valores, mude os valores das variáveis no 'topo' do arquivo Execution.py
 
-O código Algorithm.py vem com a função f(x) definida, para alterar, mude o retorno da função 'function()' dentro do arquivo.
+OBS.: O código Algorithm.py vem com a função f(x) definida, para alterar, mude o retorno da função 'function()' dentro do arquivo.
 
-### Rodando o algoritmo
+### Passo-a-passo
 
 ```bash
 # Clone este repositório
