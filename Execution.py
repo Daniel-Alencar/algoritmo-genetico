@@ -1,18 +1,25 @@
 from Problem import Problem
 from Algorithm import Algorithm
 
-limit_inferior = -10
-limit_superior = 10
+# Variáveis
+
+interval = (-10, 10)
+probability_crossover = 0.8
+probability_mutation = 0.01
+limit_generations = 100
+limit_not_improvement = 10
+
+# Definindo o problema
 
 problem = Problem()
-population = problem.generateInitPopulation(limit_inferior, limit_superior)
+population = problem.generateInitPopulation(interval[0], interval[1])
 
 # ==========================================================================
 
-algorithm = Algorithm(0.8, 0.01, population,limit_inferior, limit_superior)
-
 # Algoritmo
-algorithm.execution(limit_generations = 100, limit_not_improvement = 10)
+
+algorithm = Algorithm(probability_crossover, probability_mutation, population,interval[0], interval[1])
+algorithm.execution(limit_generations = limit_generations, limit_not_improvement = limit_not_improvement)
 
 index = algorithm.aptidao.index(max(algorithm.aptidao))
 value = algorithm.population[index].int
