@@ -18,7 +18,12 @@ population = problem.generateInitPopulation(interval[0], interval[1])
 
 # Algoritmo
 
-algorithm = Algorithm(probability_crossover, probability_mutation, population,interval[0], interval[1])
+algorithm = Algorithm(
+  probability_crossover, 
+  probability_mutation, 
+  population,interval[0], 
+  interval[1]
+)
 algorithm.execution(limit_generations = limit_generations, limit_not_improvement = limit_not_improvement)
 
 index = algorithm.aptidao.index(max(algorithm.aptidao))
